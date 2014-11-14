@@ -1,0 +1,179 @@
+//Home household
+//1. Consumption demand for home goods
+exp(CH)  =   exp(pH)^(-epsilon)*aH*exp(C);
+
+//2. Consumption demand for foreign goods
+exp(CF)  =   exp(pF)^(-epsilon)*(1-aH)*exp(C);
+
+//3. Marginal utility of consumption
+exp(varrho)  =   (exp(C)-hh*exp(C(-1)))^(-sigma)-betta*hh*(exp(C(+1))-hh*exp(C))^(-sigma);
+
+//4. Euler equation
+betta*exp(R)*exp(Lambda(+1))  =   1;
+
+//5. Stochastic discount rate
+exp(Lambda)  =   exp(varrho)/exp(varrho(-1));
+
+//6. Arrow security arbitrage
+//exp(Lambda)=exp(Lambdastar)*exp(RER(-1))/exp(RER);
+exp(varrho)     =   exp(varrhostar)*
+
+//7. Capital Euler equation
+betta*exp(Lambda(+1))*exp(Rk(+1))=1;
+
+//8. Labor market equilibrium
+chi*exp(L)^varphi    =   exp(varrho)*exp(pH)*(1-alfa)*exp(Y)/exp(L);
+
+//Prices
+//9. Home relative price aggregation
+(aH*exp(pH)^(1-epsilon)+(1-aH)*exp(pF)^(1-epsilon))^(1/(1-epsilon))=1;
+
+//10. Real exchange rate
+exp(RER)     =  ((1-aH)*exp(pH)^(1-epsilon)+aH*exp(pF)^(1-epsilon))^(1/(1-epsilon));
+
+//11. Terms of trade
+exp(TOT)     =   exp(pF)/exp(pH);
+ 
+//Home Final goods producer
+//12. Return to capital
+exp(Rk)     =   (exp(pH)*alfa*exp(Y)/exp(K(-1))+exp(ksi)*exp(Q)*(1-delta))/exp(Q(-1));
+
+//13. Home production function
+exp(Y)     =   exp(a)*(exp(ksi)*exp(K(-1)))^alfa*exp(L)^(1-alfa);
+
+// Home Capital Goods Producer
+//14. Investment demand for home goods
+exp(IH)  =   exp(pH)^(-epsilon)*aH*exp(I);
+
+//15. Investment demand for foreign goods
+exp(IF)  =   exp(pF)^(-epsilon)*(1-aH)*exp(I);
+
+//16. Optimal investment decision
+exp(Q)  =   1+eta_i/2*(exp(I)/exp(I(-1))-1)^2+eta_i*(exp(I)/exp(I(-1))-1)*exp(I)/exp(I(-1))-betta*exp(Lambda(+1))*eta_i*(exp(I(+1))/exp(I)-1)*(exp(I(+1))/exp(I))^2;
+
+//17. Capital accumulation equation
+exp(K)  =   exp(ksi)*(1-delta)*exp(K(-1))+exp(I); 
+//-eta_i/2*(exp(I)/exp(I(-1))-1)^2*exp(I);
+
+//Government
+//18. Government demand for home goods
+exp(GH)  =   exp(GHss)*exp(g);
+
+//19. Government demand for foreign goods
+exp(GF)  =   exp(GFss);
+
+//20. Government consumption
+exp(G)  =   (aH^(1/epsilon)*exp(GH)^((epsilon-1)/epsilon)+(1-aH)^(1/epsilon)*exp(GF)^((epsilon-1)/epsilon))^(epsilon/(epsilon-1));
+
+//Equilibrium
+//21. Aggregate resource constraint
+exp(Y)=exp(CH)+(1+eta_i/2*(exp(I)/exp(I(-1))-1)^2)*exp(IH)+exp(GH)+exp(CHstar)+(1+eta_i/2*(exp(Istar)/exp(Istar(-1))-1)^2)*exp(IHstar)+exp(GHstar);
+
+//Shocks
+//22. TFP shock
+a  =   rho_a*a(-1)-e_a;
+
+//23. Capital quality shock
+ksi=   rho_ksi*ksi(-1)-e_ksi;
+
+//24. Government consumption shock
+g  =   rho_g*g(-1)-e_g;
+
+//Foreign household
+//25. Consumption demand for home goods
+exp(CHstar)  =   exp(pHstar)^(-epsilon)*(1-aH)*exp(Cstar);
+
+//26. Consumption demand for foreign goods
+exp(CFstar)  =   exp(pFstar)^(-epsilon)*aH*exp(Cstar);
+
+//27. Marginal utility of consumption
+exp(varrhostar)  =   (exp(Cstar)-hh*exp(Cstar(-1)))^(-sigma)-betta*hh*(exp(Cstar(+1))-hh*exp(Cstar))^(-sigma);
+
+//28. Euler equation
+betta*exp(Rstar)*exp(Lambdastar(+1))  =   1;
+
+//29. Stochastic discount rate
+exp(Lambdastar)  =   exp(varrhostar)/exp(varrhostar(-1));
+
+//30. Capital Euler equation
+betta*exp(Lambdastar(+1))*exp(Rkstar(+1))=1;
+
+//31. Labor market equilibrium
+chi*exp(Lstar)^varphi    =   exp(varrhostar)*exp(pFstar)*(1-alfa)*exp(Ystar)/exp(Lstar);
+
+//Prices
+//32. Law of one price for home produced goods
+exp(RER)*exp(pHstar)  =   exp(pH);
+
+//33. Law of one price for foreign produced goods
+exp(RER)*exp(pFstar)  =   exp(pF);
+
+//Foreign final goods producer
+//34. Return to capital
+exp(Rkstar)     =   (exp(pFstar)*alfa*exp(Ystar)/exp(Kstar(-1))+exp(ksistar)*exp(Qstar)*(1-delta))/exp(Qstar(-1));
+
+//35. Foreign production function
+exp(Ystar)     =   exp(astar)*(exp(ksistar)*exp(Kstar(-1)))^alfa*exp(Lstar)^(1-alfa);
+
+// Foreign Capital Goods Producer
+//36. Investment demand for home goods
+exp(IHstar)  =   exp(pHstar)^(-epsilon)*(1-aH)*exp(Istar);
+
+//37. Investment demand for foreign goods
+exp(IFstar)  =   exp(pFstar)^(-epsilon)*aH*exp(Istar);
+
+//38. Optimal investment decision
+exp(Qstar)  =   1+eta_i/2*(exp(Istar)/exp(Istar(-1))-1)^2+eta_i*(exp(Istar)/exp(Istar(-1))-1)*exp(Istar)/exp(Istar(-1))-betta*exp(Lambdastar(+1))*eta_i*(exp(Istar(+1))/exp(Istar)-1)*(exp(Istar(+1))/exp(Istar))^2;
+
+//39. Capital accumulation equation
+exp(Kstar)  =   exp(ksistar)*(1-delta)*exp(Kstar(-1))+exp(Istar);
+//-eta_i/2*(exp(Istar)/exp(Istar(-1))-1)^2*exp(Istar);
+
+//Government
+//40. Government demand for home goods
+exp(GHstar)  =   exp(GHssstar);
+
+//41. Government demand for foreign goods
+exp(GFstar)  =   exp(GFssstar)*exp(gstar);
+
+//42. Government consumption
+exp(Gstar)  =   (aH^(1/epsilon)*exp(GHstar)^((epsilon-1)/epsilon)+(1-aH)^(1/epsilon)*exp(GFstar)^((epsilon-1)/epsilon))^(epsilon/(epsilon-1));
+
+//Equilibrium
+//43. Aggregate resource constraint
+exp(Ystar)=exp(CFstar)+(1+eta_i/2*(exp(Istar)/exp(Istar(-1))-1)^2)*exp(IFstar)+exp(GFstar)+exp(CF)+(1+eta_i/2*(exp(I)/exp(I(-1))-1)^2)*exp(IF)+exp(GF);
+
+//Shocks
+//44. TFP shock
+astar  =   rho_a*astar(-1)-e_astar;
+
+//45. Capital quality shock
+ksistar=   rho_ksi*ksistar(-1)-e_ksistar;
+
+//46. Government consumption shock
+gstar  =   rho_g*gstar(-1)-e_gstar;
+
+//Some extra variables for convenience
+//47. Home effective capital
+exp(Keff)   =   exp(ksi)*exp(K(-1));
+
+//48. Home wages
+exp(w)      =   exp(pH)*(1-alfa)*exp(Y)/exp(L);
+
+//49. Home marginal value product of capital
+exp(VMPK)   =   exp(pH)*alfa*exp(Y)/exp(K(-1));
+
+//50. UIP spread
+RUIP        =   RER(+1)-RER+Rstar-R;
+
+//51. Rk UIP spread
+RkUIP        =   RER(+1)-RER+Rkstar(+1)-Rk(+1);
+
+//52. Foreign effective capital
+exp(Keffstar)   =   exp(ksistar)*exp(Kstar(-1));
+
+//53. Foreign wages
+exp(wstar)      =   exp(pFstar)*(1-alfa)*exp(Ystar)/exp(Lstar);
+
+//54. Home marginal value product of capital
+exp(VMPKstar)   =   exp(pFstar)*alfa*exp(Ystar)/exp(Kstar(-1));

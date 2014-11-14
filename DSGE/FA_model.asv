@@ -1,0 +1,310 @@
+//Home household
+//1. Consumption demand for home goods
+exp(CH)  =   exp(pH)^(-epsilon)*aH*exp(C);
+
+//2. Consumption demand for foreign goods
+exp(CF)  =   exp(pF)^(-epsilon)*(1-aH)*exp(C);
+
+//3. Marginal utility of consumption
+exp(varrho)  =   (exp(C)-hh*exp(C(-1)))^(-sigma)-betta*hh*(exp(C(+1))-hh*exp(C))^(-sigma);
+
+//4. Euler equation
+betta*exp(R)*exp(Lambda(+1))  =   1;
+
+//5. Stochastic discount rate
+exp(Lambda)  =   exp(varrho)/exp(varrho(-1));
+
+//6. Labor market equilibrium
+chi*exp(L)^varphi    =   exp(varrho)*exp(pH)*(1-alfa)*exp(Y)/exp(L);
+
+//Prices
+//7. Home relative price aggregation
+(aH*exp(pH)^(1-epsilon)+(1-aH)*exp(pF)^(1-epsilon))^(1/(1-epsilon))=1;
+
+//8. Real exchange rate
+exp(RER)     =  ((1-aH)*exp(pH)^(1-epsilon)+aH*exp(pF)^(1-epsilon))^(1/(1-epsilon));
+
+//9. Terms of trade
+exp(TOT)     =   exp(pF)/exp(pH);
+ 
+//Home Financial Intermediaries
+//Local bank
+//10. Value of local banks' capital
+exp(nuL)     =   (1-thetaL)*betta*exp(Lambda(+1))*(exp(Rk(+1))-exp(R))+betta*exp(Lambda(+1))*thetaL*exp(xL(+1))*exp(nuL(+1));
+
+//11. Value of local banks' net wealth
+exp(etaL)    =   (1-thetaL)+betta*exp(Lambda(+1))*thetaL*exp(zL(+1))*exp(etaL(+1));
+
+//12. Optimal leverage of the local bank
+exp(phiL)    =   exp(etaL)/(lambdaL-exp(nuL));
+
+//13. Growth rate of individual local banks' capital
+exp(zL)      =   (exp(Rk)-exp(R(-1)))*exp(phiL(-1))+exp(R(-1));
+
+//14. Growth rate of individual local banks' net wealth
+exp(xL)      =   (exp(phiL)/exp(phiL(-1)))*exp(zL);
+
+//International bank
+//15. Value of international banks' capital
+exp(nuI)     =   (1-thetaI)*betta*exp(Lambda(+1))*(exp(RER(+1))/exp(RER)*exp(Rkstar(+1))-exp(R))+betta*exp(Lambda(+1))*thetaI*exp(xI(+1))*exp(nuI(+1));
+
+//16. Value of international banks' net wealth
+exp(etaI)    =   (1-thetaI)+betta*exp(Lambda(+1))*thetaI*exp(zI(+1))*exp(etaI(+1));
+
+//17. Optimal leverage of the international banks
+exp(phiI)    =   exp(etaI)/(lambdaI-exp(nuI));
+
+//18. Growth rate of individual international banks' capital
+exp(zI)      =   (exp(RER)/exp(RER(-1))*exp(Rkstar)-exp(R(-1)))*exp(phiI(-1))+exp(R(-1));
+
+//19. Growth rate of individual international banks' net wealth
+exp(xI)      =   (exp(phiI)/exp(phiI(-1)))*exp(zI);
+
+//Aggregate capital, net worth
+//20. Aggregate home capital
+exp(Q)*exp(K)     =   exp(phiL)*exp(NL)+exp(phiIstar)*exp(RER)*exp(NIstar);
+
+//21. Local banks' net worth
+exp(NL)      =   exp(NLe)+exp(NLn);
+
+//22. Existing local banks' net worth accumulation
+exp(NLe)     =   thetaL*exp(zL(-1))*exp(NL(-1))*exp(-e_NLe);
+
+//23. New local banks' net worth
+exp(NLn)    =   omegaL*exp(Q)*exp(K(-1));
+
+//24. International banks' net worth
+exp(NI)      =   exp(NIe)+exp(NIn);
+
+//25. International banks' net worth accumulation
+exp(NIe)    =   thetaI*exp(zI(-1))*exp(NI(-1))*exp(-e_NIe);
+
+//26. New international banks' net worth
+exp(NIn)    =   omegaI*exp(Q)*exp(K(-1));
+
+//Home Final goods producer
+//27. Return to capital
+exp(Rk)     =   (exp(pH)*alfa*exp(Y)/exp(K(-1))+exp(ksi)*exp(Q)*(1-delta))/exp(Q(-1));
+
+//28. Home production function
+exp(Y)     =   exp(a)*(exp(ksi)*exp(K(-1)))^alfa*exp(L)^(1-alfa);
+
+// Home Capital Goods Producer
+//29. Investment demand for home goods
+exp(IH)  =   exp(pH)^(-epsilon)*aH*exp(I);
+
+//30. Investment demand for foreign goods
+exp(IF)  =   exp(pF)^(-epsilon)*(1-aH)*exp(I);
+
+//31. Optimal investment decision
+exp(Q)  =   1+eta_i/2*(exp(I)/exp(I(-1))-1)^2+eta_i*(exp(I)/exp(I(-1))-1)*exp(I)/exp(I(-1))-betta*exp(Lambda(+1))*eta_i*(exp(I(+1))/exp(I)-1)*(exp(I(+1))/exp(I))^2;
+
+//32. Capital accumulation equation
+exp(K)  =   exp(ksi)*(1-delta)*exp(K(-1))+exp(I); 
+//-eta_i/2*(exp(I)/exp(I(-1))-1)^2*exp(I);
+
+//Government
+//33. Government demand for home goods
+exp(GH)  =   exp(GHss)*exp(g);
+
+//34. Government demand for foreign goods
+exp(GF)  =   exp(GFss);
+
+//35. Government consumption
+exp(G)  =   (aH^(1/epsilon)*exp(GH)^((epsilon-1)/epsilon)+(1-aH)^(1/epsilon)*exp(GF)^((epsilon-1)/epsilon))^(epsilon/(epsilon-1));
+
+//Equilibrium
+//36. Aggregate resource constraint
+exp(Y)=exp(CH)+(1+eta_i/2*(exp(I)/exp(I(-1))-1)^2)*exp(IH)+exp(GH)+exp(CHstar)+(1+eta_i/2*(exp(Istar)/exp(Istar(-1))-1)^2)*exp(IHstar)+exp(GHstar);
+
+//37. Home household budget constraint
+exp(C)+exp(phiL)*exp(NL)+exp(phiI)*exp(NI)=exp(pH)*(1-alfa)*exp(Y)/exp(L)*exp(L)+exp(Rk)*exp(phiL(-1))*exp(NL(-1))+
+exp(RER)/exp(RER(-1))*exp(Rkstar)*exp(phiI(-1))*exp(NI(-1))+exp(Q)*exp(I)-(1+eta_i/2*(exp(I)/exp(I(-1))-1)^2)*exp(I)-exp(G);
+
+//Shocks
+//38. TFP shock
+a  =   rho_a*a(-1)-e_a;
+
+//39. Capital quality shock
+ksi=   rho_ksi*ksi(-1)-e_ksi;
+
+//40. Government consumption shock
+g  =   rho_g*g(-1)-e_g;
+
+
+
+//Foreign household
+//41. Consumption demand for home goods
+exp(CHstar)  =   exp(pHstar)^(-epsilon)*(1-aH)*exp(Cstar);
+
+//42. Consumption demand for foreign goods
+exp(CFstar)  =   exp(pFstar)^(-epsilon)*aH*exp(Cstar);
+
+//43. Marginal utility of consumption
+exp(varrhostar)  =   (exp(Cstar)-hh*exp(Cstar(-1)))^(-sigma)-betta*hh*(exp(Cstar(+1))-hh*exp(Cstar))^(-sigma);
+
+//44. Euler equation
+betta*exp(Rstar)*exp(Lambdastar(+1))  =   1;
+
+//45. Stochastic discount rate
+exp(Lambdastar)  =   exp(varrhostar)/exp(varrhostar(-1));
+
+//46. Labor market equilibrium
+chi*exp(Lstar)^varphi    =   exp(varrhostar)*exp(pFstar)*(1-alfa)*exp(Ystar)/exp(Lstar);
+
+//Prices
+//47. Law of one price for home produced goods
+exp(RER)*exp(pHstar)  =   exp(pH);
+
+//48. Law of one price for foreign produced goods
+exp(RER)*exp(pFstar)  =   exp(pF);
+
+//Foreign Financial Intermediaries
+//Local bank
+//49. Value of local banks' capital
+exp(nuLstar)     =   (1-thetaL)*betta*exp(Lambdastar(+1))*(exp(Rkstar(+1))-exp(Rstar))+betta*exp(Lambdastar(+1))*thetaL*exp(xLstar(+1))*exp(nuLstar(+1));
+
+//50. Value of local banks' net wealth
+exp(etaLstar)    =   (1-thetaL)+betta*exp(Lambdastar(+1))*thetaL*exp(zLstar(+1))*exp(etaLstar(+1));
+
+//51. Optimal leverage of the local bank
+exp(phiLstar)    =   exp(etaLstar)/(lambdaL-exp(nuLstar));
+
+//52. Growth rate of individual local banks' capital
+exp(zLstar)      =   (exp(Rkstar)-exp(Rstar(-1)))*exp(phiLstar(-1))+exp(Rstar(-1));
+
+//53. Growth rate of individual local banks' net wealth
+exp(xLstar)      =   (exp(phiLstar)/exp(phiLstar(-1)))*exp(zLstar);
+
+//International bank
+//54. Value of international banks' capital
+exp(nuIstar)     =   (1-thetaI)*betta*exp(Lambdastar(+1))*(exp(RER)/exp(RER(+1))*exp(Rk(+1))-exp(Rstar))+betta*exp(Lambdastar(+1))*thetaI*exp(xIstar(+1))*exp(nuIstar(+1));
+
+//55. Value of international banks' net wealth
+exp(etaIstar)    =   (1-thetaI)+betta*exp(Lambdastar(+1))*thetaI*exp(zIstar(+1))*exp(etaIstar(+1));
+
+//56. Optimal leverage of the international banks
+exp(phiIstar)    =   exp(etaIstar)/(lambdaI-exp(nuIstar));
+
+//57. Growth rate of individual international banks' capital
+exp(zIstar)      =   (exp(RER(-1))/exp(RER)*exp(Rk)-exp(Rstar(-1)))*exp(phiIstar(-1))+exp(Rstar(-1));
+
+//58. Growth rate of individual international banks' net wealth
+exp(xIstar)      =   exp(phiIstar)/exp(phiIstar(-1))*exp(zIstar);
+
+//Foreign aggregate capital, net worth
+//59. Aggregate foreign capital
+exp(Qstar)*exp(Kstar)     =   exp(phiLstar)*exp(NLstar)+exp(phiI)*exp(NI)/exp(RER);
+
+//60. Local banks' net worth
+exp(NLstar)      =   exp(NLestar)+exp(NLnstar);
+
+//61. Existing local banks' net worth accumulation
+exp(NLestar)     =   thetaL*exp(zLstar(-1))*exp(NLstar(-1))*exp(-e_NLestar);
+
+//62. New local banks' net worth
+exp(NLnstar)    =   omegaL*exp(Qstar)*exp(Kstar(-1));
+
+//63. International banks' net worth
+exp(NIstar)      =   exp(NIestar)+exp(NInstar);
+
+//64. International banks' net worth accumulation
+exp(NIestar)    =   thetaI*exp(zIstar(-1))*exp(NIstar(-1))*exp(-e_NIestar);
+
+//65. New international banks' net worth
+exp(NInstar)    =   omegaI*exp(Qstar)*exp(Kstar(-1));
+
+//Foreign final goods producer
+//66. Return to capital
+exp(Rkstar)     =   (exp(pFstar)*alfa*exp(Ystar)/exp(Kstar(-1))+exp(ksistar)*exp(Qstar)*(1-delta))/exp(Qstar(-1));
+
+//67. Foreign production function
+exp(Ystar)     =   exp(astar)*(exp(ksistar)*exp(Kstar(-1)))^alfa*exp(Lstar)^(1-alfa);
+
+// Foreign Capital Goods Producer
+//68. Investment demand for home goods
+exp(IHstar)  =   exp(pHstar)^(-epsilon)*(1-aH)*exp(Istar);
+
+//69. Investment demand for foreign goods
+exp(IFstar)  =   exp(pFstar)^(-epsilon)*aH*exp(Istar);
+
+//70. Optimal investment decision
+exp(Qstar)  =   1+eta_i/2*(exp(Istar)/exp(Istar(-1))-1)^2+eta_i*(exp(Istar)/exp(Istar(-1))-1)*exp(Istar)/exp(Istar(-1))-betta*exp(Lambdastar(+1))*eta_i*(exp(Istar(+1))/exp(Istar)-1)*(exp(Istar(+1))/exp(Istar))^2;
+
+//71. Capital accumulation equation
+exp(Kstar)  =   exp(ksistar)*(1-delta)*exp(Kstar(-1))+exp(Istar);
+//-eta_i/2*(exp(Istar)/exp(Istar(-1))-1)^2*exp(Istar);
+
+//Government
+//72. Government demand for home goods
+exp(GHstar)  =   exp(GHssstar);
+
+//73. Government demand for foreign goods
+exp(GFstar)  =   exp(GFssstar)*exp(gstar);
+
+//74. Government consumption
+exp(Gstar)  =   (aH^(1/epsilon)*exp(GHstar)^((epsilon-1)/epsilon)+(1-aH)^(1/epsilon)*exp(GFstar)^((epsilon-1)/epsilon))^(epsilon/(epsilon-1));
+
+//Equilibrium
+//75. Aggregate resource constraint
+exp(Ystar)=exp(CFstar)+(1+eta_i/2*(exp(Istar)/exp(Istar(-1))-1)^2)*exp(IFstar)+exp(GFstar)+exp(CF)+(1+eta_i/2*(exp(I)/exp(I(-1))-1)^2)*exp(IF)+exp(GF);
+
+//Shocks
+//76. TFP shock
+astar  =   rho_a*astar(-1)-e_astar;
+
+//77. Capital quality shock
+ksistar=   rho_ksi*ksistar(-1)-e_ksistar;
+
+//78. Government consumption shock
+gstar  =   rho_g*gstar(-1)-e_gstar;
+
+
+//Some extra variables for convenience
+//79. Capital holding of local banks
+exp(KL)     =   exp(phiL)*exp(NL);
+
+//80. Capital holding of international banks
+exp(KI)     =   exp(phiIstar)*exp(NIstar)*exp(RER);
+
+//81. Home local premium
+exp(gamL)   =   exp(Rk(+1))/exp(R);
+
+//82. Home international premium
+exp(gamI)   =   exp(RER(+1))/exp(RER)*exp(Rkstar(+1))/exp(R);
+
+//83. Home effective capital
+exp(Keff)   =   exp(ksi)*exp(K(-1));
+
+//84. Home wages
+exp(w)      =   exp(pH)*(1-alfa)*exp(Y)/exp(L);
+
+//85. Home marginal value product of capital
+exp(VMPK)   =   exp(pH)*alfa*exp(Y)/exp(K);
+
+//86. Foreign capital holding of local banks
+exp(KLstar) =   exp(phiLstar)*exp(NLstar);
+
+//87. Foreign capital holding of international banks
+exp(KIstar)     =   exp(phiI)*exp(NI)/exp(RER);
+
+//88. Foreign local premium
+exp(gamLstar)   =   exp(Rkstar(+1))/exp(Rstar);
+
+//89. Foreign international premium
+exp(gamIstar)   =   exp(RER)/exp(RER(+1))*exp(Rk(+1))/exp(Rstar);
+
+//90. UIP spread
+RUIP        =   RER(+1)-RER+Rstar-R;
+
+//91. Rk UIP spread
+RkUIP        =   RER(+1)-RER+Rkstar(+1)-Rk(+1);
+
+//92. Foreign effective capital
+exp(Keffstar)   =   exp(ksistar)*exp(Kstar(-1));
+
+//93. Foreign wages
+exp(wstar)      =   exp(pH)*(1-alfa)*exp(Y)/exp(L);
+
+//94. Home marginal value product of capital
+exp(VMPK)   =   exp(pH)*alfa*exp(Y)/exp(K);
